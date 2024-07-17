@@ -10,22 +10,19 @@ import {
   View,
 } from 'react-native';
 import style from './style';
-import SelectDropdown from 'react-native-select-dropdown';
 import CurrencyItem from '../../components/CurrencyItem/CurrencyItem';
 import {
   Base_Currency,
   data,
   exchangeMap,
   getCurrencySymbol,
-  getImagePath,
 } from '../../common/helper';
 import {
   createTable,
   getDbOpenConnection,
   insertDataIntoTable,
 } from '../../database/sqllite/DbService';
-
-const dropdownData = [Base_Currency, ...data];
+import SelectCountryDropdown from '../SelectCountryDropdown/SelectCountryDropdown';
 
 const ConversionScreen = () => {
   const [currency, setCurrency] = useState(Base_Currency);
@@ -114,7 +111,10 @@ const ConversionScreen = () => {
           placeholder="Enter Amount"
           placeholderTextColor="black"
         />
-        <SelectCountryDropdown callback={setValueInCurrencyState} />
+        <SelectCountryDropdown
+          callback={setValueInCurrencyState}
+          dropdownData={[Base_Currency, ...data]}
+        />
       </View>
       <TouchableOpacity
         disabled={btnDisabled}
@@ -135,55 +135,6 @@ const ConversionScreen = () => {
         </View>
       )}
     </SafeAreaView>
-  );
-};
-
-const SelectCountryDropdown = props => {
-  return (
-    <SelectDropdown
-      data={dropdownData}
-      onSelect={(selectedItem, index) => {
-        props.callback(selectedItem);
-      }}
-      renderButton={(selectedItem, isOpened) => {
-        return (
-          <View style={style.dropdownButtonStyle}>
-            <Image
-              source={getImagePath(selectedItem)}
-              style={style.currencyImg}
-              resizeMode="contain"
-            />
-            <Image
-              source={
-                isOpened
-                  ? require('../../assets/images/arrow_down.png')
-                  : require('../../assets/images/arrow_up.png')
-              }
-              style={style.chevromImg}
-              resizeMode="contain"
-            />
-          </View>
-        );
-      }}
-      renderItem={(item, index, isSelected) => {
-        return (
-          <View
-            style={[
-              style.dropdownItemStyle,
-              isSelected && style.dropdownRenderItemBackgroundColor,
-            ]}>
-            <Image
-              source={getImagePath(item)}
-              style={style.currencyItemImg}
-              resizeMode="contain"
-            />
-          </View>
-        );
-      }}
-      showsVerticalScrollIndicator={false}
-      dropdownStyle={style.dropdownMenuStyle}
-      defaultValueByIndex={0}
-    />
   );
 };
 
