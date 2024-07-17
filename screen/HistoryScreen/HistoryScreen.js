@@ -7,7 +7,7 @@ import {
 } from '../../database/sqllite/DbService';
 import style from './style';
 
-const HistoryScreen = () => {
+const HistoryScreen = ({navigation}) => {
   const [currencyhistory, setcurrencyhistory] = useState([]);
   const getDatafromDB = async () => {
     const db = await getDbOpenConnection();
@@ -16,10 +16,6 @@ const HistoryScreen = () => {
 
   useEffect(() => {
     getDatafromDB().then(res => {
-      console.log('result: ' + res);
-      res.map(value => {
-        console.log(value);
-      });
       setcurrencyhistory(res);
     });
   }, []);
@@ -29,7 +25,13 @@ const HistoryScreen = () => {
       <FlatList
         data={currencyhistory}
         renderItem={({item}) => {
-          return <HistoryItem currency={item.currency} amount={item.amount} />;
+          return (
+            <HistoryItem
+              currency={item.currency}
+              amount={item.amount}
+              navigation={navigation}
+            />
+          );
         }}
       />
     </SafeAreaView>

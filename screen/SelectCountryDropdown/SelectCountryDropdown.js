@@ -4,7 +4,7 @@ import style from './style';
 import {getImagePath} from '../../common/helper';
 import {View, Image} from 'react-native';
 
-const SelectCountryDropdown = ({dropdownData, callback}) => {
+const SelectCountryDropdown = ({dropdownData, callback, selectedIndex}) => {
   return (
     <SelectDropdown
       data={dropdownData}
@@ -48,7 +48,7 @@ const SelectCountryDropdown = ({dropdownData, callback}) => {
       }}
       showsVerticalScrollIndicator={false}
       dropdownStyle={style.dropdownMenuStyle}
-      defaultValueByIndex={0}
+      defaultValueByIndex={selectedIndex}
     />
   );
 };
