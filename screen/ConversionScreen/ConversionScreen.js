@@ -56,7 +56,7 @@ const ConversionScreen = ({route}) => {
       setCurrency(route?.params?.currency);
       setSelectedIndex(dataDropdown.indexOf(route?.params?.currency));
       setAmount(route?.params?.amount);
-      setBthDisabled(true);
+      setBthDisabled(false);
       autoConvert.current = true;
     }
   }, [route?.params?.currency, route?.params?.amount]);
@@ -68,13 +68,11 @@ const ConversionScreen = ({route}) => {
       } else {
         setResult([]);
       }
+    } else {
+      setResult([]);
     }
     autoConvert.current = false;
   }, [amount, currency]);
-
-  useEffect(() => {
-    setBthDisabled(amount === 0);
-  }, [currency]);
 
   /**
    * Converts the amount to different currencies and updates result state
