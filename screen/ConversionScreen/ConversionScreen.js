@@ -56,7 +56,7 @@ const ConversionScreen = ({route}) => {
       setCurrency(route?.params?.currency);
       setSelectedIndex(dataDropdown.indexOf(route?.params?.currency));
       setAmount(route?.params?.amount);
-      setBthDisabled(false);
+      setBthDisabled(true);
       autoConvert.current = true;
     }
   }, [route?.params?.currency, route?.params?.amount]);
@@ -72,12 +72,13 @@ const ConversionScreen = ({route}) => {
       setResult([]);
     }
     autoConvert.current = false;
-  }, [amount, currency]);
+  }, [amount]);
 
   /**
    * Converts the amount to different currencies and updates result state
    */
   function convertAmount() {
+    console.log(currency);
     input.current.blur();
     setLoadingVisible(true);
 
@@ -118,6 +119,7 @@ const ConversionScreen = ({route}) => {
       }
 
       setResult(arr);
+      setBthDisabled(true);
     } catch (error) {
       console.log(error);
     } finally {
@@ -138,7 +140,13 @@ const ConversionScreen = ({route}) => {
    * @param item each input data
    */
   const setValueInCurrencyState = item => {
-    setCurrency(item);
+    setCurrency(oldItem => {
+      if (oldItem !== item) {
+        setBthDisabled(false);
+        setResult([]);
+      }
+      return item;
+    });
   };
 
   return (
